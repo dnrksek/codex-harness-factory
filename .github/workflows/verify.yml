@@ -7,14 +7,24 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Run repository verification
         run: ./scripts/verify.sh
+
+      - name: Ensure runtime outputs are not tracked
+        run: |
+          tracked="$(git ls-files generated _workspace .omx || true)"
+          if [ -n "$tracked" ]; then
+            echo "Runtime files are tracked:"
+            echo "$tracked"
+            exit 1
+          fi
