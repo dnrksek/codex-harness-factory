@@ -30,7 +30,7 @@ From the repository root:
 ./scripts/verify.sh
 ```
 
-This compiles the package, runs stdlib tests, regenerates both MVP harnesses, compares them with tracked golden fixtures, runs each generated harness verifier, and checks workspace artifacts.
+This compiles the package, runs stdlib tests, reads fixture mappings from `fixtures.json`, regenerates all registered MVP harnesses, compares them with tracked golden fixtures, runs each generated harness verifier, and checks workspace artifacts.
 
 To generate one harness manually:
 
@@ -75,14 +75,42 @@ The verification gate checks:
 
 ## 6. Golden Fixtures
 
-Tracked golden fixtures live under:
+`fixtures.json` is the source of truth for golden fixture mappings. Each fixture entry defines:
+
+- `request`: tracked request fixture under `examples/`.
+- `output`: ignored live output under `generated/`.
+- `golden`: tracked expected output under `tests/fixtures/`.
+
+Current tracked golden fixtures:
 
 ```text
 tests/fixtures/writeup-crud-harness/
 tests/fixtures/python-debug-harness/
+tests/fixtures/paper-summary-harness/
 ```
 
-They prove that the factory is deterministic and not hardcoded only for the writeup CRUD example. Live outputs under `generated/` are regenerated and compared against these fixtures.
+They prove that the factory is deterministic and not hardcoded only for coding-task harnesses. Live outputs under `generated/` are regenerated and compared against these fixtures.
+
+`./scripts/verify.sh` reads fixture mappings from `fixtures.json`. `./scripts/update-golden.sh` also reads fixture mappings from `fixtures.json`, so normal verification and intentional fixture refresh use the same registry.
+
+
+## Adding a New Golden Fixture
+
+To add a new fixture, make the fixture explicit in the registry and refresh only that fixture:
+
+1. Add `examples/<name>.request.md`.
+2. Add a `fixtures.json` entry with `request`, `output`, and `golden` paths.
+3. Generate/update the tracked expected output under `tests/fixtures/<name>-harness/`.
+4. Run:
+   ```bash
+   ./scripts/update-golden.sh <name>
+   ```
+5. Run:
+   ```bash
+   ./scripts/verify.sh
+   ```
+
+Do not add live `generated/` or `_workspace/` files to git.
 
 ## 7. Workspace Artifacts
 
@@ -219,5 +247,8 @@ The MVP explicitly does not include:
 - `mvp-0.3.0` — provenance classification validation.
 - `mvp-0.4.0` — deterministic quality report generation.
 - `mvp-0.5.0` — release automation with ship helper, release handoff skill, and GitHub Actions verification.
+- `mvp-0.6.0` — explicit golden fixture update workflow.
+- `mvp-0.7.0` — third paper-summary fixture for document-processing harness coverage.
+- `mvp-0.8.0` — centralized fixture registry in `fixtures.json`.
 
-See [`docs/releases/mvp-0.5.0.md`](docs/releases/mvp-0.5.0.md) for release notes.
+See [`docs/releases/mvp-0.5.0.md`](docs/releases/mvp-0.5.0.md) and [`docs/releases/mvp-0.8.0.md`](docs/releases/mvp-0.8.0.md) for release notes.
