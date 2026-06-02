@@ -11,6 +11,7 @@ Make golden fixture updates explicit, fixture-scoped, repeatable, and reviewable
 1. Choose exactly one known fixture:
    - `writeup-crud`
    - `python-debug`
+   - `paper-summary`
 2. Run:
    ```bash
    ./scripts/update-golden.sh <fixture>

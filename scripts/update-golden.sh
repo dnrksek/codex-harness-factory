@@ -8,6 +8,7 @@ Usage: ./scripts/update-golden.sh <fixture>
 Known fixtures:
   writeup-crud
   python-debug
+  paper-summary
 
 Regenerates the selected live output, replaces only that fixture's tracked
 golden directory, then runs ./scripts/verify.sh. This script does not commit.
@@ -53,6 +54,11 @@ case "$fixture" in
     request="examples/python-debug.request.md"
     output="generated/python-debug-harness"
     golden="tests/fixtures/python-debug-harness"
+    ;;
+  paper-summary)
+    request="examples/paper-summary.request.md"
+    output="generated/paper-summary-harness"
+    golden="tests/fixtures/paper-summary-harness"
     ;;
   *)
     echo "Unknown fixture: $fixture" >&2

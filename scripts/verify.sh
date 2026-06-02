@@ -28,5 +28,6 @@ generate_and_verify() {
 
 generate_and_verify writeup-crud
 generate_and_verify python-debug
+generate_and_verify paper-summary
 
 echo "Repository verification passed."

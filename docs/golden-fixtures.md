@@ -16,6 +16,7 @@ Current fixtures:
 | --- | --- | --- | --- |
 | `writeup-crud` | `examples/writeup-crud.request.md` | `generated/writeup-crud-harness` | `tests/fixtures/writeup-crud-harness` |
 | `python-debug` | `examples/python-debug.request.md` | `generated/python-debug-harness` | `tests/fixtures/python-debug-harness` |
+| `paper-summary` | `examples/paper-summary.request.md` | `generated/paper-summary-harness` | `tests/fixtures/paper-summary-harness` |
 
 ## Intentional update workflow
 
@@ -24,6 +25,7 @@ Use the update helper only when a generated harness change is intentional and th
 ```bash
 ./scripts/update-golden.sh writeup-crud
 ./scripts/update-golden.sh python-debug
+./scripts/update-golden.sh paper-summary
 ```
 
 The script:
