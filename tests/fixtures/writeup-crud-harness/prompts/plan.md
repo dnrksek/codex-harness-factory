@@ -1,0 +1,20 @@
+# Plan Prompt: Writeup CRUD Harness
+
+## Purpose
+Turn the analyzed request into an ordered implementation plan with tests and stop conditions.
+
+## Context
+- Harness: Writeup CRUD Harness
+- Domain: Writeup CRUD
+- Entity: Writeup
+- Operations: Create, Read, Update, Delete
+
+## Instructions
+1. Read `docs/SPEC.md` before acting.
+2. Stay within the MVP constraints and non-goals in the spec.
+3. Preserve deterministic behavior and avoid unnecessary dependencies.
+4. Record assumptions explicitly when information is missing.
+5. Run `./scripts/verify.sh` before final handoff when files changed.
+
+## Phase output
+Return concise findings, changed files if any, verification evidence, and remaining risks.
