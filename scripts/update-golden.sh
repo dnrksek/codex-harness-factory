@@ -5,10 +5,7 @@ usage() {
   cat <<'EOF'
 Usage: ./scripts/update-golden.sh <fixture>
 
-Known fixtures:
-  writeup-crud
-  python-debug
-  paper-summary
+Known fixtures are read from fixtures.json.
 
 Regenerates the selected live output, replaces only that fixture's tracked
 golden directory, then runs ./scripts/verify.sh. This script does not commit.
@@ -34,6 +31,25 @@ reject_empty_path() {
   fi
 }
 
+fixture_value() {
+  local fixture="$1"
+  local field="$2"
+  python3 - "$fixture" "$field" <<'PY'
+import json
+import sys
+fixture, field = sys.argv[1], sys.argv[2]
+with open("fixtures.json", encoding="utf-8") as handle:
+    registry = json.load(handle)["fixtures"]
+if fixture not in registry:
+    print(f"Unknown fixture: {fixture}", file=sys.stderr)
+    print("Known fixtures:", file=sys.stderr)
+    for name in registry:
+        print(f"  {name}", file=sys.stderr)
+    raise SystemExit(2)
+print(registry[fixture][field])
+PY
+}
+
 if [[ $# -ne 1 ]]; then
   usage >&2
   exit 2
@@ -44,28 +60,9 @@ fixture="$1"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-case "$fixture" in
-  writeup-crud)
-    request="examples/writeup-crud.request.md"
-    output="generated/writeup-crud-harness"
-    golden="tests/fixtures/writeup-crud-harness"
-    ;;
-  python-debug)
-    request="examples/python-debug.request.md"
-    output="generated/python-debug-harness"
-    golden="tests/fixtures/python-debug-harness"
-    ;;
-  paper-summary)
-    request="examples/paper-summary.request.md"
-    output="generated/paper-summary-harness"
-    golden="tests/fixtures/paper-summary-harness"
-    ;;
-  *)
-    echo "Unknown fixture: $fixture" >&2
-    usage >&2
-    exit 2
-    ;;
-esac
+request="$(fixture_value "$fixture" request)"
+output="$(fixture_value "$fixture" output)"
+golden="$(fixture_value "$fixture" golden)"
 
 reject_empty_path request "$request"
 reject_empty_path output "$output"

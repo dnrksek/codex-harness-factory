@@ -8,7 +8,7 @@ Make golden fixture updates explicit, fixture-scoped, repeatable, and reviewable
 
 ## Workflow
 
-1. Choose exactly one known fixture:
+1. Choose exactly one fixture listed in `fixtures.json`, currently:
    - `writeup-crud`
    - `python-debug`
    - `paper-summary`

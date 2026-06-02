@@ -1,0 +1,19 @@
+{
+  "fixtures": {
+    "writeup-crud": {
+      "request": "examples/writeup-crud.request.md",
+      "output": "generated/writeup-crud-harness",
+      "golden": "tests/fixtures/writeup-crud-harness"
+    },
+    "python-debug": {
+      "request": "examples/python-debug.request.md",
+      "output": "generated/python-debug-harness",
+      "golden": "tests/fixtures/python-debug-harness"
+    },
+    "paper-summary": {
+      "request": "examples/paper-summary.request.md",
+      "output": "generated/paper-summary-harness",
+      "golden": "tests/fixtures/paper-summary-harness"
+    }
+  }
+}
