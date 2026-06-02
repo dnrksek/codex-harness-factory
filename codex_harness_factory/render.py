@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .extract import extract_metadata
 from .model import HarnessMetadata
+from .quality import build_quality_report, write_quality_report
 from .templates import render_files
 from .validation import validate_harness, write_validation_report
 
@@ -48,6 +49,16 @@ def generate_harness(request_path: Path, output_dir: Path, workspace_root: Path)
 
     errors = validate_harness(output_dir, meta)
     write_validation_report(job_dir / "validation.json", errors)
+    write_quality_report(
+        job_dir / "quality-report.json",
+        build_quality_report(
+            validation_errors=errors,
+            output_dir=output_dir,
+            workspace_root=workspace_root,
+            meta=meta,
+            safe_output_path=True,
+        ),
+    )
     if errors:
         raise ValueError("Generated harness failed validation:\n" + "\n".join(f"- {e}" for e in errors))
     return meta

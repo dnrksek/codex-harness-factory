@@ -23,6 +23,7 @@ generate_and_verify() {
 
   test -f _workspace/${slug}-*/metadata.json
   test -f _workspace/${slug}-*/validation.json
+  test -f _workspace/${slug}-*/quality-report.json
 }
 
 generate_and_verify writeup-crud
