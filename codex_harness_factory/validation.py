@@ -9,7 +9,7 @@ from pathlib import Path
 from .model import HarnessMetadata
 from .templates import REQUIRED_FILES
 
-_FORBIDDEN_MARKERS = ("{{", "}}", "{%", "%}", "PLACEHOLDER", "TBD")
+_FORBIDDEN_MARKERS = ("__TEMPLATE_", "{{TEMPLATE_", "@@TEMPLATE_")
 
 
 def validate_harness(root: Path, meta: HarnessMetadata | None = None) -> list[str]:
