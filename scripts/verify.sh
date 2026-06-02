@@ -6,15 +6,26 @@ cd "$ROOT"
 
 python3 -m compileall -q codex_harness_factory
 python3 -m unittest discover -s tests -p 'test_*.py'
-python3 -m codex_harness_factory \
-  examples/writeup-crud.request.md \
-  --out generated/writeup-crud-harness \
-  --workspace-root _workspace \
-  --golden tests/fixtures/writeup-crud-harness
 
-./generated/writeup-crud-harness/scripts/verify.sh
+generate_and_verify() {
+  local slug="$1"
+  local request="examples/${slug}.request.md"
+  local output="generated/${slug}-harness"
+  local golden="tests/fixtures/${slug}-harness"
 
-test -f _workspace/writeup-crud-*/metadata.json
-test -f _workspace/writeup-crud-*/validation.json
+  python3 -m codex_harness_factory \
+    "$request" \
+    --out "$output" \
+    --workspace-root _workspace \
+    --golden "$golden"
+
+  "./${output}/scripts/verify.sh"
+
+  test -f _workspace/${slug}-*/metadata.json
+  test -f _workspace/${slug}-*/validation.json
+}
+
+generate_and_verify writeup-crud
+generate_and_verify python-debug
 
 echo "Repository verification passed."
